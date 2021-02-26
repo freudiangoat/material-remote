@@ -1,20 +1,21 @@
 {
-  "name": "foundry-typescript-template",
-  "title": "Typescript Template",
+  "name": "material-remote",
+  "title": "Material Remote",
   "description": "", 
   "authors": [
     {
-      "name": "spacemandev",
-      "discord": "spacemandev#6256"
+      "name": "freudiangoat",
+      "discord": "freudiangoat#8772"
     }
   ],
   "version": "0.0.1",
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
   "manifestPlusVersion": "1.0.0",
-  "url": "",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/freudiangoat/material-remote",
+  "manifest": "https://github.com/freudiangoat/material-remote/releases/download/latest/module.json",
+  "download": "https://github.com/freudiangoat/material-remote/releases/download/latest/module.zip",
+  "license": "https://github.com/freudiangoat/material-remote/blob/main/LICENSE",
   "type": "module",
   "includes": [
     "./assets/**",
