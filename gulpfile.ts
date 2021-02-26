@@ -10,7 +10,7 @@ gulp.task('compile', () => {
 })
 
 gulp.task('copy', async () => {
-  return new Promise((resolve,reject) => {
+  return new Promise<void>((resolve,reject) => {
     gulp.src('README.md').pipe(gulp.dest("dist/"))
     gulp.src("src/module.json").pipe(gulp.dest('dist/'))
     gulp.src("src/lang/**").pipe(gulp.dest('dist/lang/'))
