@@ -4,7 +4,7 @@ const project = ts.createProject('tsconfig.json')
 
 
 gulp.task('compile', () => {
-  return gulp.src('src/**/*.ts')
+  return gulp.src('src/**/*.ts', {base: 'src/'})
     .pipe(project())
     .pipe(gulp.dest('dist/'))
 })
@@ -23,6 +23,12 @@ gulp.task('copy', async () => {
 
 gulp.task('build', gulp.parallel('compile', 'copy'));
 
+gulp.task('watch', function() {
+  gulp.watch('src/**/*.ts', gulp.parallel('compile'));
+  gulp.watch('src/lang/**', gulp.series('copy'));
+  gulp.watch('src/templates/**', gulp.series('copy'));
+  gulp.watch('src/styles/**', gulp.series('copy'));
+});
 
 /*
 // This is supposed to copy the dist folder into the modules directory for testing. Only works if you've set it up the right way

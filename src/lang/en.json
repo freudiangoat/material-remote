@@ -1,0 +1,19 @@
+{
+    "MaterialRemote.Notify.ConnectionLost": "The connection to the hardware server has been lost.",
+    "MaterialRemote.Notify.ConnectionFailed": "The connection to the hardware server could not be made.",
+    "MaterialRemote.Notify.Connected": "Connected to the hardware server.",
+
+    "MaterialRemote.Setting.Enable.Name": "Enable",
+    "MaterialRemote.Setting.Address.Name": "Hardware Server Address",
+    "MaterialRemote.Setting.Address.Hint": "The websocket URL of the hardware server to connect to.",
+
+    "MaterialRemote.Setting.Debug.Name": "Enable Debug Logging",
+    "MaterialRemote.Setting.Debug.Hint": "Enables additional debug logging in the console. Useful for debugging if messages are not being mapped properly.",
+
+    "MaterialRemote.Setting.StateMenu.Name": "State Mappings",
+    "MaterialRemote.Setting.StateMenu.Label": "Configure",
+    "MaterialRemote.Menu.StateConfig.Title": "State Mapping Configuration",
+
+    "MaterialRemote.Setting.Listening": "Listening...",
+    "MaterialRemote.Message.Button": "Button" 
+}
