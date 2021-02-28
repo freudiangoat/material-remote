@@ -1,14 +1,15 @@
 {
   "name": "material-remote",
   "title": "Material Remote",
-  "description": "", 
+  "description": "Allows you to control foundry from a remote websocket server, like one attached to a MIDI device.", 
+  "author": "FreudianGoat",
   "authors": [
     {
       "name": "freudiangoat",
       "discord": "freudiangoat#8772"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
   "manifestPlusVersion": "1.0.0",
