@@ -9,10 +9,19 @@
 
 # Changelog
 * First release
+* Added support for two new message types: 'button' and 'analog'
+* Macros can be bound to incoming messages
 
 # Description
 
-Under construction.
+Material Remote is a Foundry VTT module that provides a flexible way to have an external service control your games in Foundry VTT.
+
+Currently, the module supports performing the following actions within foundry:
+
+[x] Executing macros
+[ ] Changing scene lighting
+[ ] Starting/Finishing combat
+[ ] Controlling Playlists
 
 # License
 
