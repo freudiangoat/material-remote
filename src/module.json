@@ -9,7 +9,7 @@
       "discord": "freudiangoat#8772"
     }
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
   "manifestPlusVersion": "1.0.0",
@@ -26,20 +26,6 @@
     "./templates/**",
     "./module.json",
     "./README.md"
-  ],
-  "media": [
-    {
-      "type": "icon",
-      "location": ""
-    }, 
-    {
-      "type": "cover",
-      "location": ""
-    },
-    {
-      "type": "screenshot",
-      "location": ""
-    }
   ],
   "esmodules": [
     "scripts/module.js"

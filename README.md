@@ -9,8 +9,9 @@
 
 # Changelog
 * First release
-* Added support for two new message types: 'button' and 'analog'
+* Added support for two message types: 'button' and 'analog'
 * Macros can be bound to incoming messages
+* Remote server is informed of all buttons that are bound to actions.
 
 # Description
 
@@ -18,10 +19,10 @@ Material Remote is a Foundry VTT module that provides a flexible way to have an 
 
 Currently, the module supports performing the following actions within foundry:
 
-[x] Executing macros
-[ ] Changing scene lighting
-[ ] Starting/Finishing combat
-[ ] Controlling Playlists
+- [x] Executing macros
+- [ ] Changing scene lighting
+- [ ] Starting/Finishing combat
+- [ ] Controlling Playlists
 
 # License
 
