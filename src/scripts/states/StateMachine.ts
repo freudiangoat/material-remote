@@ -1,7 +1,11 @@
 import { ModuleID } from "../constants.js";
 import { debug } from "../debug.js";
+import { ButtonMsg } from "../msg/ButtonMsg.js";
+import { parseMessage } from "../msg/MessageFactory.js";
 import { PingMsg, PongMsg } from "../msg/PingMsg.js";
-import { StateMenuConfig } from "../settings/stateMenuForm.js";
+import { SetBindingsMsg } from "../msg/SetBindingsMsg.js";
+import { StateMenuConfig, StateConfig } from "../settings/stateMenuForm.js";
+import { sendMessage } from "../websocket.js";
 import { ConfigState } from "./ConfigState.js";
 import { IState } from "./IState.js";
 import { SimpleState } from "./SimpleState.js";
@@ -25,7 +29,7 @@ class StateMachine {
             this.states[s.name] = s;
         });
 
-        this.states[this.state].activate();
+        this.stateChange(this.state);
 
         this.states["_config"] = new ConfigState();
         this.stateStack = [];
@@ -43,19 +47,49 @@ class StateMachine {
         return this.states[this.state];
     }
 
+    reactivate(): Promise<any> {
+        return this.stateChange(this.state);
+    }
+
     pushState(name: string) {
         debug(`pushing state ${name}`);
         this.stateStack.push(this.state);
         this.state = name;
-        this.states[name].activate();
+        this.stateChange(name);
     }
 
     popState() {
         if (this.stateStack.length > 0) {
-            this.state = this.stateStack.pop();
             debug(`popping back to state ${this.state}`);
-            this.states[this.state].activate();
+            this.stateChange(this.stateStack.pop());
         }
+    }
+
+    private async stateChange(newStateName: string): Promise<any> {
+        const oldState = this.states[this.state];
+        const newState = this.states[newStateName];
+
+        if (oldState) {
+            await oldState.deactivate();
+        }
+
+        await newState.activate();
+
+        this.state = newStateName;
+
+        const settings = game.settings.get(ModuleID, "stateConfigs") as StateMenuConfig;
+        const currentStateSettings = settings.states.find(s => s.name === newState.name);
+
+        if (!currentStateSettings)
+        {
+            return;
+        }
+
+        const boundButtons = currentStateSettings.mappings.map(m => parseMessage(m.msg))
+            .filter(m => m instanceof ButtonMsg)
+            .map(m => (m as ButtonMsg).name);
+
+        sendMessage(new SetBindingsMsg(boundButtons));
     }
 }
 

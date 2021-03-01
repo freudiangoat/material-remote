@@ -47,6 +47,8 @@ function connectionOpened(): void {
     const connect = new ConnectMsg(`${ModuleID}:${game.modules.get(ModuleID).data.version}`);
     ws.send(JSON.stringify(connect));
 
+    StateManager.reactivate();
+
     resetTimeout();
 }
 

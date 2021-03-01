@@ -4,6 +4,7 @@ import { StateManager } from "../states/StateMachine.js";
 
 export interface MappingConfig {
     event: string;
+    msg: string;
     macro: string;
 }
 
@@ -52,6 +53,7 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         const state = this.data.states[this.data.currentState];
         state.mappings.push({
             event: "",
+            msg: "",
             macro: game.macros.entries[0]._id,
         });
     }
@@ -131,6 +133,7 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
             state.setListener(m => {
                 target.innerText = m.toString();
                 mapping.event = m.toString();
+                mapping.msg = JSON.stringify(m);
                 state.setListener(null);
             });
         }

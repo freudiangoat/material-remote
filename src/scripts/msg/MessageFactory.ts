@@ -16,7 +16,13 @@ registerMessage(ButtonMsg);
 registerMessage(AnalogMsg);
 
 export function parseMessage(msg: string): IMsg | null {
-    const parsed = JSON.parse(msg);
+    var parsed: any;
+    try {
+        parsed = JSON.parse(msg);
+    } catch (e) {
+        console.warn("Unable to parse message: ", msg);
+        return null;
+    }
 
     const id = parsed.type as string;
     const messageType = messageTypes[id];

@@ -17,6 +17,9 @@ export class SimpleState implements IState {
         this.config = mappings.states.find(s => s.name === this.name);
     }
 
+    async deactivate(): Promise<void> {
+    }
+
     async handleMessage(msg: IMsg): Promise<any> {
         debug(`state ${this.name} received message`, msg);
 

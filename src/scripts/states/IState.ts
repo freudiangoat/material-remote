@@ -6,5 +6,7 @@ export interface IState {
 
     activate(): Promise<void>;
 
+    deactivate(): Promise<void>;
+
     handleMessage(msg: IMsg): Promise<any>;
 }
