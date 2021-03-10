@@ -21,8 +21,6 @@ export class SimpleState implements IState {
     }
 
     async handleMessage(msg: IMsg): Promise<any> {
-        debug(`state ${this.name} received message`, msg);
-
         const mapping = this.config?.mappings.find(m => m.event === msg.toString());
 
         HandlerDispatcher.handle(mapping);

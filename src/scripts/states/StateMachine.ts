@@ -40,6 +40,8 @@ class StateMachine {
             return;
         }
 
+        debug(`State '${this.states[this.state].name}' received message`, msg);
+
         return await this.states[this.state].handleMessage(msg);
     }
 

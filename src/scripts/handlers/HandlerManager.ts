@@ -1,3 +1,4 @@
+import { debug } from "../debug.js";
 import { MappingConfig, StateConfigData } from "../settings/stateMenuForm.js";
 import { CombatHandler } from "./CombatHandler.js";
 import { IMappingHandler } from "./IMappingHandler.js";
@@ -34,6 +35,11 @@ class HandlerManager {
     }
 
     handle(mapping: MappingConfig) {
+        if (!mapping) {
+            debug("Received unmapped message.");
+            return;
+        }
+
         this.handlerTypes[mapping.type]?.handle(mapping.value);
     }
 }
