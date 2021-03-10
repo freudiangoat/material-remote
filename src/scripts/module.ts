@@ -8,10 +8,11 @@ Hooks.once('init', ()=> {
 });
 
 Hooks.once('ready', () => {
+    initializeStateMachine();
+
     if (!game.settings.get(ModuleID, 'enable')) {
         return;
     }
 
     startWebsocket();
-    initializeStateMachine();
 })

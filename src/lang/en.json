@@ -15,5 +15,6 @@
     "MaterialRemote.Menu.StateConfig.Title": "State Mapping Configuration",
 
     "MaterialRemote.Setting.Listening": "Listening...",
+    "MaterialRemote.Setting.SelectMacro": "Select a Macro...",
     "MaterialRemote.Message.Button": "Button" 
 }

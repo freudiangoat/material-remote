@@ -54,7 +54,7 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         state.mappings.push({
             event: "",
             msg: "",
-            macro: game.macros.entries[0]._id,
+            macro: game.macros.entries[0]?._id,
         });
     }
 
@@ -71,7 +71,12 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         return {
             states: this.data.states,
             currentState: this.data.states[0],
-            macros: game.macros
+            macros: [
+                {
+                    name: game.i18n.localize("MaterialRemote.Setting.SelectMacro"),
+                    _id: null
+                },
+                ...game.macros]
         };
     }
 
