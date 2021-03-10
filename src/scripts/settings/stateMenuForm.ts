@@ -1,11 +1,13 @@
 import { ModuleID } from "../constants.js";
+import { HandlerDispatcher } from "../handlers/HandlerManager.js";
 import { ConfigState } from "../states/ConfigState.js";
 import { StateManager } from "../states/StateMachine.js";
 
 export interface MappingConfig {
     event: string;
+    type: string;
     msg: string;
-    macro: string;
+    value: string;
 }
 
 export interface StateConfig {
@@ -16,6 +18,17 @@ export interface StateConfig {
 export interface StateMenuConfig {
     currentState: number;
     states: StateConfig[];
+}
+
+export interface MappingTypeConfig {
+    name: string
+    id: string
+}
+
+export interface StateConfigData extends Record<string, any> {
+    states: StateConfig[]
+    currentState: StateConfig
+    types: Array<MappingTypeConfig>
 }
 
 export class stateMenuForm extends FormApplication<StateMenuConfig> {
@@ -51,10 +64,12 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
 
     addMapping(): void {
         const state = this.data.states[this.data.currentState];
+        const defaultType = Object.keys(HandlerDispatcher.handlerTypes)[0];
         state.mappings.push({
             event: "",
             msg: "",
-            macro: game.macros.entries[0]?._id,
+            type: defaultType,
+            value: HandlerDispatcher.getDefault(defaultType),
         });
     }
 
@@ -63,21 +78,18 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         state.mappings.splice(idx, 1);
     }
 
-    getData() {
+    getData(): StateConfigData {
         const settings = game.settings.get(ModuleID, "stateConfigs") as StateMenuConfig;
 
         this.data = settings;
 
-        return {
+        let output = {
             states: this.data.states,
             currentState: this.data.states[0],
-            macros: [
-                {
-                    name: game.i18n.localize("MaterialRemote.Setting.SelectMacro"),
-                    _id: null
-                },
-                ...game.macros]
+            types: [],
         };
+
+        return HandlerDispatcher.augmentSettings(output);
     }
 
     activateListeners(html: JQuery | HTMLElement) {
@@ -97,20 +109,37 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         return;
     }
 
-    onMacroChange(e: Event): any {
+    async onMacroChange(e: Event): Promise<any> {
         const state = StateManager.getCurrentState();
         if (!(state instanceof ConfigState))
         {
             return;
         }
 
-        if (e.currentTarget instanceof HTMLSelectElement)
+        if (!(e.currentTarget instanceof HTMLSelectElement))
         {
-            const target = e.currentTarget;
-            const idx = parseInt(target.parentElement.dataset.index);
-            const currentState = this.data.states[this.data.currentState];
-            const mapping = currentState.mappings[idx];
-            mapping.macro = e.currentTarget.value;
+            return;
+        }
+
+        const target = e.currentTarget;
+        const idx = parseInt(target.parentElement.dataset.index);
+        const currentState = this.data.states[this.data.currentState];
+        const mapping = currentState.mappings[idx];
+
+        if (target.id === "type") {
+            mapping.type = target.value;
+
+            await this.submit({preventClose: true});
+            this.render();
+            return;
+        }
+
+        if (target.id === "value") {
+            mapping.value = target.value;
+
+            await this.submit({preventClose: true});
+            this.render();
+            return;
         }
     }
 

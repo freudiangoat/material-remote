@@ -13,6 +13,15 @@
     "MaterialRemote.Setting.StateMenu.Name": "State Mappings",
     "MaterialRemote.Setting.StateMenu.Label": "Configure",
     "MaterialRemote.Menu.StateConfig.Title": "State Mapping Configuration",
+    "MaterialRemote.Menu.StateConfig.Event": "Event",
+    "MaterialRemote.Menu.StateConfig.Type": "Handler Type",
+    "MaterialRemote.Menu.StateConfig.Value": "Value",
+
+    "MaterialRemote.Setting.StateConfig.Handler.Macro": "Macro",
+    "MaterialRemote.Setting.StateConfig.Handler.Combat": "Combat",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatStart": "Start Combat",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatToggle": "Toggle Combat",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatFinish": "Finish Combat",
 
     "MaterialRemote.Setting.Listening": "Listening...",
     "MaterialRemote.Setting.SelectMacro": "Select a Macro...",

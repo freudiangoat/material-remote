@@ -38,3 +38,7 @@
 .mat-rmt-mapping-list > li {
     align-items: center;
 }
+
+li.mat-rmt-mapping > select {
+    margin: 0 5px;
+}

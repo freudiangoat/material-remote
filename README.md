@@ -8,6 +8,14 @@
 <!--- ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2F<your-module-name>&colorB=4aa94a) -->
 
 # Changelog
+
+## 0.1.4
+
+* Added support for beginning and ending combat encounters.
+* Minor bug fixes.
+
+## 0.1.3
+
 * First release
 * Added support for two message types: 'button' and 'analog'
 * Macros can be bound to incoming messages
@@ -21,7 +29,7 @@ Currently, the module supports performing the following actions within foundry:
 
 - [x] Executing macros
 - [ ] Changing scene lighting
-- [ ] Starting/Finishing combat
+- [x] Starting/Finishing combat
 - [ ] Controlling Playlists
 
 # License

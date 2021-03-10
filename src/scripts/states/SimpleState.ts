@@ -1,6 +1,6 @@
 import { ModuleID } from "../constants.js";
 import { debug } from "../debug.js";
-import { ButtonMsg } from "../msg/ButtonMsg.js";
+import { HandlerDispatcher } from "../handlers/HandlerManager.js";
 import { StateConfig, StateMenuConfig } from "../settings/stateMenuForm.js";
 import { IState } from "./IState.js";
 
@@ -24,11 +24,7 @@ export class SimpleState implements IState {
         debug(`state ${this.name} received message`, msg);
 
         const mapping = this.config?.mappings.find(m => m.event === msg.toString());
-        if (!mapping?.macro) {
-            return;
-        }
 
-        const macro = game.macros.get(mapping?.macro);
-        macro?.execute();
+        HandlerDispatcher.handle(mapping);
     }
 }

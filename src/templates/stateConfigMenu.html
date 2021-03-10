@@ -14,8 +14,9 @@
     <div>
     {{#with currentState}}
         <header class="mat-rmt-header flexrow">
-            <div>Event</div>
-            <div>Macro</div>
+            <div>{{ localize "MaterialRemote.Menu.StateConfig.Event" }}</div>
+            <div>{{ localize "MaterialRemote.Menu.StateConfig.Type" }}</div>
+            <div>{{ localize "MaterialRemote.Menu.StateConfig.Value" }}</div>
             <div class="mat-rmt-controls">
                 <a data-action="add"><i class="far fa-plus-square"></i></a>
             </div>
@@ -24,9 +25,16 @@
         {{#each mappings as |mapping i|}}
             <li class="mat-rmt-mapping flexrow" data-index="{{i}}">
                 <button>{{#if event}}{{ event }}{{else}}Not Set{{/if}}</button>
-                <select id="macro">
-                {{#select mapping.macro}}
-                {{#each ../../macros }}
+                <select id="type">
+                {{#select mapping.type}}
+                {{#each ../../types}}
+                    <option value="{{ id }}">{{ name }}</option>
+                {{/each}}
+                {{/select}}
+                </select>
+                <select id="value">
+                {{#select mapping.value}}
+                {{#each (lookup ../.. mapping.type) }}
                     <option value="{{ _id }}">{{ name }}</option>
                 {{/each}}
                 {{/select}}
