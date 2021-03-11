@@ -12,6 +12,10 @@
 
     "MaterialRemote.Setting.StateMenu.Name": "State Mappings",
     "MaterialRemote.Setting.StateMenu.Label": "Configure",
+
+    "MaterialRemote.Dialog.NewState.Title": "Add new state",
+    "MaterialRemote.Dialog.NewState.Label": "New state name",
+
     "MaterialRemote.Menu.StateConfig.Title": "State Mapping Configuration",
     "MaterialRemote.Menu.StateConfig.Event": "Event",
     "MaterialRemote.Menu.StateConfig.Type": "Handler Type",

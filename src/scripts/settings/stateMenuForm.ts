@@ -27,8 +27,9 @@ export interface MappingTypeConfig {
 
 export interface StateConfigData extends Record<string, any> {
     states: StateConfig[]
-    currentState: StateConfig
+    currentState: number
     types: Array<MappingTypeConfig>
+    canDeleteState: boolean
 }
 
 export class stateMenuForm extends FormApplication<StateMenuConfig> {
@@ -58,6 +59,8 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
 
     async close(options?: object): Promise<void> {
         await game.settings.set(ModuleID, "stateConfigs", this.data);
+        StateManager.refreshStates();
+        StateManager.swapState(this.data.states[this.data.currentState].name);
         StateManager.popState();
         await super.close(options);
     }
@@ -85,7 +88,8 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
 
         let output = {
             states: this.data.states,
-            currentState: this.data.states[0],
+            currentState: this.data.currentState,
+            canDeleteState: this.data.states.length > 1,
             types: [],
         };
 
@@ -105,17 +109,11 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
             .forEach(v => v.addEventListener("click", e => this._onEventListen(e)))
 
         this.form.querySelectorAll("select")
-            .forEach(v => v.addEventListener("change", e => this.onMacroChange(e)))
+            .forEach(v => v.addEventListener("change", e => this.onSelectChange(e)))
         return;
     }
 
-    async onMacroChange(e: Event): Promise<any> {
-        const state = StateManager.getCurrentState();
-        if (!(state instanceof ConfigState))
-        {
-            return;
-        }
-
+    async onSelectChange(e: Event): Promise<any> {
         if (!(e.currentTarget instanceof HTMLSelectElement))
         {
             return;
@@ -125,6 +123,16 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         const idx = parseInt(target.parentElement.dataset.index);
         const currentState = this.data.states[this.data.currentState];
         const mapping = currentState.mappings[idx];
+
+        if (target.id === "state") {
+            this.data.currentState = parseInt(target.value);
+
+            StateManager.postStateUpdate(this.data.states[this.data.currentState]);
+
+            await this.submit({preventClose: true});
+            this.render();
+            return;
+        }
 
         if (target.id === "type") {
             mapping.type = target.value;
@@ -169,11 +177,12 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
                 mapping.event = m.toString();
                 mapping.msg = JSON.stringify(m);
                 state.setListener(null);
+                StateManager.postStateUpdate(currentState);
             });
         }
     }
 
-    private _onAClick(event: MouseEvent | JQuery.ClickEvent): Promise<any> {
+    private async _onAClick(event: MouseEvent | JQuery.ClickEvent): Promise<any> {
         event.preventDefault();
 
         if (!(event.currentTarget instanceof HTMLElement))
@@ -185,13 +194,72 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
         switch (btn.dataset.action) {
             case "add":
                 this.addMapping();
-                return this.submit({preventClose: true})
-                    .then(() => this.render());
+                await this.submit({preventClose: true});
+                this.render();
+                return;
             case "del":
                 const idx = btn.parentElement.parentElement.dataset.index;
                 this.removeMapping(parseInt(idx));
-                return this.submit({preventClose: true})
-                    .then(() => this.render());
+                await this.submit({preventClose: true});
+                this.render();
+                return;
+            case "statedel":
+                this.deleteState();
+                await this.submit({preventClose: true});
+                this.render();
+                return;
+
+            case "stateadd":
+                const content = await loadTemplates([`modules/${ModuleID}/templates/newStateDialog.html`]);
+                const dialog = new Dialog({
+                    title: game.i18n.localize("MaterialRemote.Dialog.NewState.Title"),
+                    content: content[0](),
+                    buttons: {
+                        cancel: {
+                            label: "Cancel",
+                            callback: null,
+                        },
+                        ok: {
+                            label: "Ok",
+                            callback: html => {
+                                if (!(html instanceof HTMLElement)) {
+                                    const name = html.find("#name");
+                                    this.addState(name.val());
+
+                                    this.submit({preventClose: true})
+                                        .then(() => this.render());
+                                    return;
+                                }
+
+                                const name = html.querySelector("#name") as HTMLInputElement;
+                                this.addState(name.value);
+
+                                this.submit({preventClose: true})
+                                    .then(() => this.render());
+                            },
+                        }
+                    }
+                })
+
+                dialog.render(true);
         }
+    }
+
+    deleteState() {
+        this.data.states.splice(this.data.currentState, 1);
+        this.data.currentState = Math.min(this.data.states.length, this.data.currentState);
+    }
+
+    addState(value: any) {
+        if (typeof value !== "string") {
+            return;
+        }
+
+        this.data.states.push({
+            name: value,
+            mappings: []
+        });
+
+        this.data.currentState = this.data.states.length - 1;
     }
 }

@@ -1,7 +1,3 @@
-import { ModuleID } from "../constants.js";
-import { SetBindingsMsg } from "../msg/SetBindingsMsg.js";
-import { StateMenuConfig } from "../settings/stateMenuForm.js";
-import { sendMessage } from "../websocket.js";
 import { IState } from "./IState.js";
 
 export class ConfigState implements IState {

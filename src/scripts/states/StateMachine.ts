@@ -4,7 +4,7 @@ import { ButtonMsg } from "../msg/ButtonMsg.js";
 import { parseMessage } from "../msg/MessageFactory.js";
 import { PingMsg, PongMsg } from "../msg/PingMsg.js";
 import { SetBindingsMsg } from "../msg/SetBindingsMsg.js";
-import { StateMenuConfig, StateConfig } from "../settings/stateMenuForm.js";
+import { StateConfig, StateMenuConfig } from "../settings/stateMenuForm.js";
 import { sendMessage } from "../websocket.js";
 import { ConfigState } from "./ConfigState.js";
 import { IState } from "./IState.js";
@@ -14,8 +14,15 @@ class StateMachine {
     private state: string
     private states: Record<string, IState>
     private stateStack: string[]
+    private configState = new ConfigState();
 
     constructor() {
+        this.refreshStates();
+        this.stateChange(this.state);
+        this.stateStack = [];
+    }
+
+    refreshStates() {
         const settings = game.settings.get(ModuleID, 'stateConfigs') as StateMenuConfig;
 
         var stateList = settings.states.map(sc => {
@@ -29,10 +36,7 @@ class StateMachine {
             this.states[s.name] = s;
         });
 
-        this.stateChange(this.state);
-
-        this.states["_config"] = new ConfigState();
-        this.stateStack = [];
+        this.states["_config"] = this.configState;
     }
 
     async handleMessage(msg: IMsg): Promise<any> {
@@ -62,9 +66,21 @@ class StateMachine {
 
     popState() {
         if (this.stateStack.length > 0) {
-            debug(`popping back to state ${this.state}`);
+            debug(`popping back to state ${this.stateStack[this.stateStack.length - 1]}`);
             this.stateChange(this.stateStack.pop());
         }
+    }
+
+    peekState(): IState {
+        if (this.stateStack.length > 0) {
+            return this.states[this.stateStack[this.stateStack.length - 1]];
+        }
+
+        return this.getCurrentState();
+    }
+
+    swapState(replaceState: string) {
+        this.stateStack[this.stateStack.length - 1] = replaceState;
     }
 
     private async stateChange(newStateName: string): Promise<any> {
@@ -75,13 +91,21 @@ class StateMachine {
             await oldState.deactivate();
         }
 
+        if (!newState) {
+            debug(`Unable to find state '${newStateName}'`);
+            return;
+        }
+
         await newState.activate();
 
         this.state = newStateName;
 
         const settings = game.settings.get(ModuleID, "stateConfigs") as StateMenuConfig;
         const currentStateSettings = settings.states.find(s => s.name === newState.name);
+        this.postStateUpdate(currentStateSettings);
+    }
 
+    postStateUpdate(currentStateSettings: StateConfig) {
         if (!currentStateSettings)
         {
             return;

@@ -2,17 +2,25 @@
     <div>
         <h2>{{ localize "MaterialRemote.Menu.StateConfig.Title" }}</h2>
     </div>
-    <div class="form-group">
-        <select name="currentState" default="">
-        {{#select currentState.name}}
-        {{#each states}}
-            <option value="{{ name }}">{{ name }}</option>
+    <div class="form-group flexrow">
+        <select id="state" default="">
+        {{#select currentState}}
+        {{#each states as | state i |}}
+            <option value="{{ i }}">{{ state.name }}</option>
         {{/each}}
         {{/select}}
         </select>
+        <div class="mat-rmt-controls">
+            <a data-action="stateadd"><i class="far fa-plus-square"></i></a>
+        </div>
+        {{#if canDeleteState}}
+        <div class="mat-rmt-controls">
+            <a data-action="statedel"><i class="fas fa-trash"></i></a>
+        </div>
+        {{/if}}
     </div>
     <div>
-    {{#with currentState}}
+    {{#with (lookup states currentState)}}
         <header class="mat-rmt-header flexrow">
             <div>{{ localize "MaterialRemote.Menu.StateConfig.Event" }}</div>
             <div>{{ localize "MaterialRemote.Menu.StateConfig.Type" }}</div>
