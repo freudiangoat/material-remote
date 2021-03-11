@@ -3,15 +3,17 @@ export class AnalogMsg implements IMsg {
 
     type: string;
     name: string;
-    value: number;
+    position: number;
+    percentage: number;
 
-    constructor(name: string, value: number) {
+    constructor(name: string, position: number, percentage: number) {
         this.type = AnalogMsg.id;
         this.name = name;
-        this.value = value;
+        this.position = position;
+        this.percentage = percentage;
     }
 
     toString(): string {
-        return `Analog ${this.name}`
+        return `Analog '${this.name}'`
     }
 }
