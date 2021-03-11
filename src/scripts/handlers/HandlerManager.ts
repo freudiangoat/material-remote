@@ -12,8 +12,12 @@ class HandlerManager {
         this.handlerTypes[t.id] = new t();
     }
 
-    getHandlerTypes(): Array<string> {
-        return Object.keys(this.handlerTypes)
+    getHandlerTypes(msg: IMsg | null): Array<string> {
+        if (msg === null) {
+            return Object.keys(this.handlerTypes)
+        }
+
+        return Object.keys(this.handlerTypes).filter(type => this.handlerTypes[type].supportsMessage(msg));
     }
 
     getDefault(id: string): string {
@@ -34,13 +38,18 @@ class HandlerManager {
         return newObj;
     }
 
-    handle(mapping: MappingConfig) {
+    handle(msg: IMsg, mapping: MappingConfig) {
         if (!mapping) {
             debug("Received unmapped message.");
             return;
         }
 
-        this.handlerTypes[mapping.type]?.handle(mapping.value);
+        const handler = this.handlerTypes[mapping.type];
+        if (!handler || !handler.supportsMessage(msg)) {
+            return;
+        }
+
+        handler.handle(msg, mapping.value);
     }
 }
 

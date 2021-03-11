@@ -21,6 +21,8 @@
     "MaterialRemote.Menu.StateConfig.Type": "Handler Type",
     "MaterialRemote.Menu.StateConfig.Value": "Value",
 
+    "MaterialRemote.Menu.StateConfig.NoType": "No Valid Handlers",
+
     "MaterialRemote.Setting.StateConfig.Handler.Macro": "Macro",
     "MaterialRemote.Setting.StateConfig.Handler.Combat": "Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatStart": "Start Combat",

@@ -1,5 +1,6 @@
-import { StateConfigData } from "../settings/stateMenuForm";
-import { IMappingHandler } from "./IMappingHandler";
+import { ButtonMsg } from "../msg/ButtonMsg.js";
+import { StateConfigData } from "../settings/stateMenuForm.js";
+import { IMappingHandler } from "./IMappingHandler.js";
 
 export class CombatHandler implements IMappingHandler {
     static id: string = "combat";
@@ -10,7 +11,11 @@ export class CombatHandler implements IMappingHandler {
         this.type = CombatHandler.id;
     }
 
-    async handle(value: string): Promise<any> {
+    supportsMessage(msgType: IMsg): boolean {
+        return msgType instanceof ButtonMsg;
+    }
+
+    async handle(msg: IMsg, value: string): Promise<any> {
         if (value === "toggle") {
             if (game.combat) {
                 value = "finish";
@@ -55,7 +60,8 @@ export class CombatHandler implements IMappingHandler {
                 ...original.types,
                 {
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.Combat"),
-                    id: this.type
+                    id: this.type,
+                    supportsMessage: this.supportsMessage
                 }
             ],
             [this.type]: [

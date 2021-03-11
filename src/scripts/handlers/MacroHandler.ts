@@ -1,4 +1,5 @@
-import { MappingConfig, StateConfigData } from "../settings/stateMenuForm.js";
+import { ButtonMsg } from "../msg/ButtonMsg.js";
+import { StateConfigData } from "../settings/stateMenuForm.js";
 import { IMappingHandler } from "./IMappingHandler.js";
 
 export class MacroHandler implements IMappingHandler {
@@ -8,6 +9,10 @@ export class MacroHandler implements IMappingHandler {
 
     constructor() {
         this.type = MacroHandler.id;
+    }
+
+    supportsMessage(msg: IMsg): boolean {
+        return msg instanceof ButtonMsg;
     }
 
     getDefault(): string {
@@ -21,7 +26,8 @@ export class MacroHandler implements IMappingHandler {
                 ...original.types,
                 {
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.Macro"),
-                    id: MacroHandler.id 
+                    id: MacroHandler.id,
+                    supportsMessage: this.supportsMessage
                 }
             ],
             [MacroHandler.id]: [
@@ -34,7 +40,7 @@ export class MacroHandler implements IMappingHandler {
         };
     }
 
-    handle(value: string): void {
+    handle(msg: IMsg, value: string): void {
         const macro = game.macros.get(value);
         macro?.execute();
     }

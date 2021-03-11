@@ -35,7 +35,7 @@
                 <button>{{#if event}}{{ event }}{{else}}Not Set{{/if}}</button>
                 <select id="type">
                 {{#select mapping.type}}
-                {{#each ../../types}}
+                {{#each (mrDefault (mrDict "id" "" "name" (localize "MaterialRemote.Menu.StateConfig.NoType")) (mrFilterMessageHandlers ../../types mapping.msg)) }}
                     <option value="{{ id }}">{{ name }}</option>
                 {{/each}}
                 {{/select}}

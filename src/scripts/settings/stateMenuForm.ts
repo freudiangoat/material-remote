@@ -23,6 +23,7 @@ export interface StateMenuConfig {
 export interface MappingTypeConfig {
     name: string
     id: string
+    supportsMessage: (msg: IMsg) => boolean
 }
 
 export interface StateConfigData extends Record<string, any> {
@@ -178,6 +179,13 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
                 mapping.msg = JSON.stringify(m);
                 state.setListener(null);
                 StateManager.postStateUpdate(currentState);
+
+                if (HandlerDispatcher.getHandlerTypes(m).indexOf(mapping.type) === -1) {
+                    mapping.type = "";
+                }
+
+                this.submit({preventClose: true});
+                this.render(true);
             });
         }
     }
