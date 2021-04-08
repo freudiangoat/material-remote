@@ -42,3 +42,7 @@
 li.mat-rmt-mapping > select {
     margin: 0 5px;
 }
+
+.mat-rmt-mapping > * {
+    width: 50px
+}

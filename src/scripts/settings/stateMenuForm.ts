@@ -61,7 +61,7 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
     async close(options?: object): Promise<void> {
         await game.settings.set(ModuleID, "stateConfigs", this.data);
         StateManager.refreshStates();
-        StateManager.swapState(this.data.states[this.data.currentState].name);
+        StateManager.swapPreviousState(this.data.states[this.data.currentState].name);
         StateManager.popState();
         await super.close(options);
     }
@@ -137,6 +137,7 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
 
         if (target.id === "type") {
             mapping.type = target.value;
+            mapping.value = HandlerDispatcher.getDefault(mapping.type);
 
             await this.submit({preventClose: true});
             this.render();
@@ -180,8 +181,9 @@ export class stateMenuForm extends FormApplication<StateMenuConfig> {
                 state.setListener(null);
                 StateManager.postStateUpdate(currentState);
 
-                if (HandlerDispatcher.getHandlerTypes(m).indexOf(mapping.type) === -1) {
-                    mapping.type = "";
+                const validHandlers = HandlerDispatcher.getHandlerTypes(m);
+                if (validHandlers.indexOf(mapping.type) === -1) {
+                    mapping.type = validHandlers[0] ?? "";
                 }
 
                 this.submit({preventClose: true});

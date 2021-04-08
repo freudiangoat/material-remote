@@ -57,6 +57,10 @@ class StateMachine {
         return this.stateChange(this.state);
     }
 
+    getAllStates(): Array<IState> {
+        return Object.values(this.states);
+    }
+
     pushState(name: string) {
         debug(`pushing state ${name}`);
         this.stateStack.push(this.state);
@@ -79,7 +83,15 @@ class StateMachine {
         return this.getCurrentState();
     }
 
-    swapState(replaceState: string) {
+    changeState(name: string) {
+        if (this.stateStack.length > 0) {
+            this.stateStack.pop();
+        }
+
+        this.pushState(name);
+    }
+
+    swapPreviousState(replaceState: string) {
         this.stateStack[this.stateStack.length - 1] = replaceState;
     }
 
@@ -102,6 +114,8 @@ class StateMachine {
 
         const settings = game.settings.get(ModuleID, "stateConfigs") as StateMenuConfig;
         const currentStateSettings = settings.states.find(s => s.name === newState.name);
+        settings.currentState = settings.states.indexOf(currentStateSettings);
+        game.settings.set(ModuleID, "stateConfigs", settings);
         this.postStateUpdate(currentStateSettings);
     }
 

@@ -24,10 +24,16 @@
     "MaterialRemote.Menu.StateConfig.NoType": "No Valid Handlers",
 
     "MaterialRemote.Setting.StateConfig.Handler.Macro": "Macro",
+
     "MaterialRemote.Setting.StateConfig.Handler.Combat": "Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatStart": "Start Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatToggle": "Toggle Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatFinish": "Finish Combat",
+
+    "MaterialRemote.Setting.StateConfig.Handler.SceneLighting": "Scene Lighting",
+    "MaterialRemote.Setting.StateConfig.Handler.SceneLightingDarkness": "Darkness",
+
+    "MaterialRemote.Setting.StateConfig.Handler.States": "States",
 
     "MaterialRemote.Setting.Listening": "Listening...",
     "MaterialRemote.Setting.SelectMacro": "Select a Macro...",
