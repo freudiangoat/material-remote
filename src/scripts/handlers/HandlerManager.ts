@@ -3,6 +3,7 @@ import { MappingConfig, StateConfigData } from "../settings/stateMenuForm.js";
 import { CombatHandler } from "./CombatHandler.js";
 import { IMappingHandler } from "./IMappingHandler.js";
 import { MacroHandler } from "./MacroHandler.js";
+import { PlaylistChangeHandler } from "./PlaylistChangeHandler.js";
 import { SceneLightingHandler } from "./SceneLightingHandler.js";
 import { StateChangeHandler } from "./StateChangeHandler.js";
 
@@ -61,3 +62,4 @@ HandlerDispatcher.registerHandler(MacroHandler);
 HandlerDispatcher.registerHandler(CombatHandler);
 HandlerDispatcher.registerHandler(SceneLightingHandler);
 HandlerDispatcher.registerHandler(StateChangeHandler);
+HandlerDispatcher.registerHandler(PlaylistChangeHandler);

@@ -9,6 +9,10 @@
 
 ## Changelog
 
+### 0.2.1
+
+* Added support for playing and stopping playlists.
+
 ### 0.2.0
 
 * Added support for multiple states with independent mappings.

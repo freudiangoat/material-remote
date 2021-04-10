@@ -35,6 +35,9 @@
 
     "MaterialRemote.Setting.StateConfig.Handler.States": "States",
 
+    "MaterialRemote.Setting.StateConfig.Handler.Playlist": "Playlists",
+    "MaterialRemote.Setting.StateConfig.Handler.PlaylistStop": "Stop Playlist",
+
     "MaterialRemote.Setting.Listening": "Listening...",
     "MaterialRemote.Setting.SelectMacro": "Select a Macro...",
     "MaterialRemote.Message.Button": "Button" 
