@@ -4,6 +4,11 @@ import { IMappingHandler } from "./IMappingHandler.js";
 
 export class CombatHandler implements IMappingHandler {
     static id: string = "combat";
+    private static _startId: string = "start";
+    private static _toggleId: string = "toggle";
+    private static _finishId: string = "finish";
+    private static _nextTurnId: string = "next";
+    private static _prevTurnId: string = "previous";
 
     type: string;
 
@@ -16,28 +21,61 @@ export class CombatHandler implements IMappingHandler {
     }
 
     async handle(msg: IMsg, value: string): Promise<any> {
-        if (value === "toggle") {
+        if (value === CombatHandler._toggleId) {
             if (game.combat) {
-                value = "finish";
+                value = CombatHandler._finishId;
             } else {
-                value = "start";
+                value = CombatHandler._startId;
             }
         }
 
-        if (value === "start") {
-            if (game.combat) {
-                return;
-            }
-
-            const combat = await this.getCombat()
-            await combat.startCombat();
-        } else {
-            if (!game.combat) {
-                return;
-            }
-
-            await game.combat.endCombat();
+        switch (value) {
+            case CombatHandler._startId:
+                await this.startCombat();
+                break;
+            case CombatHandler._finishId:
+                await this.finishCombat();
+                break;
+            case CombatHandler._nextTurnId:
+                await this.nextTurn();
+                break;
+            case CombatHandler._prevTurnId:
+                await this.prevTurn();
+                break;
         }
+    }
+
+    async startCombat(): Promise<any> {
+        if (game.combat) {
+            return;
+        }
+
+        const combat = await this.getCombat()
+        await combat.startCombat();
+    }
+
+    async finishCombat(): Promise<any> {
+        if (!game.combat) {
+            return;
+        }
+
+        await game.combat.endCombat();
+    }
+
+    async nextTurn(): Promise<any> {
+        if (!game.combat) {
+            return;
+        }
+
+        await game.combat.nextTurn();
+    }
+
+    async prevTurn(): Promise<any> {
+        if (!game.combat) {
+            return;
+        }
+
+        await game.combat.previousTurn();
     }
 
     async getCombat(): Promise<any> {
@@ -66,15 +104,23 @@ export class CombatHandler implements IMappingHandler {
             ],
             [this.type]: [
                 {
-                    _id: "start",
+                    _id: CombatHandler._startId,
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatStart")
                 },
                 {
-                    _id: "toggle",
+                    _id: CombatHandler._toggleId,
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatToggle")
                 },
                 {
-                    _id: "finish",
+                    _id: CombatHandler._nextTurnId,
+                    name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatNext")
+                },
+                {
+                    _id: CombatHandler._prevTurnId,
+                    name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatPrev")
+                },
+                {
+                    _id: CombatHandler._finishId,
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatFinish")
                 },
             ]

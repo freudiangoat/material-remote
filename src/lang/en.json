@@ -29,6 +29,8 @@
     "MaterialRemote.Setting.StateConfig.Handler.CombatStart": "Start Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatToggle": "Toggle Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatFinish": "Finish Combat",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatNext": "Next Turn",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatPrev": "Previous Turn",
 
     "MaterialRemote.Setting.StateConfig.Handler.SceneLighting": "Scene Lighting",
     "MaterialRemote.Setting.StateConfig.Handler.SceneLightingDarkness": "Darkness",
