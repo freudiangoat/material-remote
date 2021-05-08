@@ -9,6 +9,15 @@
 
 ## Changelog
 
+### 0.2.2
+
+* Combat functionality
+  * Added move to next/previous turn support
+  * Added start with all players support
+* Improved remote connection management
+  * Added better reconnection handling
+  * Fixed 'ws://' urls being handled incorrectly.
+
 ### 0.2.1
 
 * Added support for playing and stopping playlists.
