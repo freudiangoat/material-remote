@@ -24,14 +24,35 @@ export function startWebsocket() {
 
     ws.onmessage = incomingMessage;
     ws.onopen = connectionOpened;
+    ws.onerror = connectionError;
+    ws.onclose = connectionClosed;
 
     resetPingTimeout();
     resetTimeout(10000);
 }
 
+function connectionError(evt: Event) {
+    debug("Connection error", evt)
+}
+
+function connectionClosed(evt: CloseEvent) {
+    debug("Connection closed.");
+}
+
 function resetWebsocket(): void {
+    debug("Connection timed out, resetting.");
+
     if (WSClientConnected) {
         ui.notifications.warn(game.i18n.localize("MaterialRemote.Notify.ConnectionLost"));
+
+        try
+        {
+            ws.close();
+        }
+        catch
+        {
+            debug("Failed to close previous connection.");
+        }
     } else {
         ui.notifications.warn(game.i18n.localize("MaterialRemote.Notify.ConnectionFailed"));
     }
@@ -44,6 +65,7 @@ function connectionOpened(): void {
     WSClientConnected = true;
     ui.notifications.info(game.i18n.localize("MaterialRemote.Notify.Connected"));
 
+    debug("Connected to server. Sending identification.");
     const connect = new ConnectMsg(`${ModuleID}:${game.modules.get(ModuleID).data.version}`);
     ws.send(JSON.stringify(connect));
 
