@@ -5,6 +5,7 @@ import { IMappingHandler } from "./IMappingHandler.js";
 export class CombatHandler implements IMappingHandler {
     static id: string = "combat";
     private static _startId: string = "start";
+    private static _startAllPlayersId: string = "startAllPlayers";
     private static _toggleId: string = "toggle";
     private static _finishId: string = "finish";
     private static _nextTurnId: string = "next";
@@ -31,7 +32,8 @@ export class CombatHandler implements IMappingHandler {
 
         switch (value) {
             case CombatHandler._startId:
-                await this.startCombat();
+            case CombatHandler._startAllPlayersId:
+                await this.startCombat(value === CombatHandler._startAllPlayersId);
                 break;
             case CombatHandler._finishId:
                 await this.finishCombat();
@@ -45,13 +47,27 @@ export class CombatHandler implements IMappingHandler {
         }
     }
 
-    async startCombat(): Promise<any> {
+    async startCombat(allPlayers: boolean): Promise<any> {
         if (game.combat) {
             return;
         }
 
         const combat = await this.getCombat()
         await combat.startCombat();
+
+        if (allPlayers) {
+            const playerTokens = canvas.tokens.ownedTokens.filter(t => t.actor.hasPlayerOwner);
+
+            playerTokens.forEach((t: Token) => {
+                const cbt = combat as any;
+
+                // Looks like this definition is incorrect.
+                cbt.createCombatant({
+                    tokenId: t.id,
+                    hidden: false
+                });
+            });
+        }
     }
 
     async finishCombat(): Promise<any> {
@@ -78,14 +94,16 @@ export class CombatHandler implements IMappingHandler {
         await game.combat.previousTurn();
     }
 
-    async getCombat(): Promise<any> {
+    async getCombat(): Promise<Combat> {
         if (!game.combat) {
-            return await Combat.create(
+            await Combat.create(
                 {
                     combatants: [],
                     scene: canvas.scene
                 }
             );
+
+            return game.combat;
         }
 
         return game.combat;
@@ -106,6 +124,10 @@ export class CombatHandler implements IMappingHandler {
                 {
                     _id: CombatHandler._startId,
                     name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatStart")
+                },
+                {
+                    _id: CombatHandler._startAllPlayersId,
+                    name: game.i18n.localize("MaterialRemote.Setting.StateConfig.Handler.CombatStartAllPlayers")
                 },
                 {
                     _id: CombatHandler._toggleId,

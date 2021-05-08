@@ -27,6 +27,7 @@
 
     "MaterialRemote.Setting.StateConfig.Handler.Combat": "Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatStart": "Start Combat",
+    "MaterialRemote.Setting.StateConfig.Handler.CombatStartAllPlayers": "Start Combat (all players)",
     "MaterialRemote.Setting.StateConfig.Handler.CombatToggle": "Toggle Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatFinish": "Finish Combat",
     "MaterialRemote.Setting.StateConfig.Handler.CombatNext": "Next Turn",
