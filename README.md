@@ -1,6 +1,6 @@
 # Websocket Remote
 
-![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
+![Foundry v0.7.9](https://img.shields.io/badge/Foundry-v0.7.9-informational)
 ![Latest Release Download Count](https://img.shields.io/github/downloads/freudiangoat/material-remote/latest/module.zip)
 
 <!--- Forge Bazaar Install % Badge -->
@@ -48,10 +48,10 @@ Material Remote is a Foundry VTT module that provides a flexible way to have an 
 
 Currently, the module supports performing the following actions within foundry:
 
-- [x] Executing macros
-- [x] Changing scene lighting
-- [x] Starting/Finishing combat
-- [ ] Controlling Playlists
+* [x] Executing macros
+* [x] Changing scene lighting
+* [x] Starting/Finishing combat
+* [ ] Controlling Playlists
 
 ## License
 
