@@ -9,6 +9,10 @@
 
 ## Changelog
 
+### 0.2.3
+
+* Hotfix to address parsing issues for URLs with no protocol.
+
 ### 0.2.2
 
 * Combat functionality

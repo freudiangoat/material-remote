@@ -11,9 +11,12 @@ var wsPingInterval: NodeJS.Timeout;
 var WSClientConnected: boolean
 
 export function startWebsocket() {
-    const address = game.settings.get(ModuleID, 'address') as string;
+    var address = game.settings.get(ModuleID, 'address') as string;
+    if (!address.match("^[a-z]*://")) {
+        address = "ws://" + address;
+    }
+
     const parsedUrl = new URL(address);
-    var url = address;
     
     if (parsedUrl.protocol !== "wss:" && parsedUrl.protocol !== "ws:")
     {
@@ -21,13 +24,15 @@ export function startWebsocket() {
             ? "wss:"
             : "ws:";
 
-        url = parsedUrl.toString();
+        address = parsedUrl.toString();
     }
 
     try {
-        ws = new WebSocket(url);
+        ws = new WebSocket(address);
     }
     catch {
+        debug("Unable to connect to:", address);
+        return;
     }
 
     ws.onmessage = incomingMessage;
