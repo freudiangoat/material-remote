@@ -12,9 +12,17 @@ var WSClientConnected: boolean
 
 export function startWebsocket() {
     const address = game.settings.get(ModuleID, 'address') as string;
-    const url = address.startsWith('wss://')
-        ? address
-        : `ws://${address}`;
+    const parsedUrl = new URL(address);
+    var url = address;
+    
+    if (parsedUrl.protocol !== "wss:" && parsedUrl.protocol !== "ws:")
+    {
+        parsedUrl.protocol = parsedUrl.protocol.endsWith("s:")
+            ? "wss:"
+            : "ws:";
+
+        url = parsedUrl.toString();
+    }
 
     try {
         ws = new WebSocket(url);
